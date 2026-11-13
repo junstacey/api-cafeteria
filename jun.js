@@ -16,7 +16,7 @@ let pedidos = [
     { Id: 6, cliente: "Carla", item: ["croissant", "latte"], total: 5500 },
 ]
 
-// Rutas se la API
+// Rutas de la API
 app.get('/', (req, res) => {
     res.send('Bienvenido mi API: pedidos de café');
 })
