@@ -16,6 +16,11 @@ let pedidos = [
     { Id: 6, cliente: "Carla", item: ["croissant", "latte"], total: 5500 },
 ]
 
+// Rutas se la API
+app.get('/', (req, res) => {
+    res.send('Bienvenido mi API: pedidos de café');
+})
+
 // leer todos los pedidos
 app.get('/pedidos', (req, res) => {
     res.json(pedidos);
@@ -29,6 +34,18 @@ app.get('/pedidos/:id', (req, res) => {
         return res.status(404).json({ error: "Pedido no encontrado" });
     };
     res.json(pedido);
+  });
+
+  // Leer pedidos pendientes
+  app.get('/pedidos/pendientes', (req, res) => {
+    const pedidosPendientes = pedidos.filter(P => P.estado === "pendiente");
+    res.json(pedidosPendientes);
+  })
+
+  // Leer pedidos completados
+  app.get('/pedidos/completados', (req, res) => {
+    const pedidosCompletados = pedidos.filter(P => P.estado === "completado");
+    res.json(pedidosCompletados);
   });
 
 //crear un nuevo pedido
@@ -52,6 +69,17 @@ if (!cliente || !item || !total) {
     res.status(201).json({ mensaje: "Pedido creado", pedido: nuevoPedido });
 });
     
+// Actualizar el estado de un pedido por Id
+app.patch('/pedidos/:id/estado', (req, res) => {
+    const id = parseInt(req.params.id);
+    const pedidoIndex = pedidos.findIndex(p => p.Id === id);
+    if (pedidoIndex === -1) {
+        return res.status(404).json({ error: "Pedido no encontrado" });
+    }
+    const { estado } = req.body;
+    pedidos[pedidoIndex] = { ...pedidos[pedidoIndex], estado };
+    res.status(200).json({ mensaje: "Estado del pedido actualizado", pedido: pedidos[pedidoIndex] });
+});
 
 // actualizar un pedido por Id
 app.put('/pedidos/:id', (req, res) => {
@@ -67,7 +95,7 @@ app.put('/pedidos/:id', (req, res) => {
 // Eliminar un pedido por Id
 app.delete('/pedidos/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const pediddoIndex = pedidos.findIndex(p => p.Id === id);
+    const pedidoIndex = pedidos.findIndex(p => p.Id === id);
     if (pedidoIndex === -1) {
         return res.status(404).json({ error: "Pedido no encontrado" });
     }
@@ -80,5 +108,3 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`servidor corriendo en http://localhost:${PORT}`);
 });
-
-
