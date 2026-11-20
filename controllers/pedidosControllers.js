@@ -56,7 +56,7 @@ if (!cliente || !item ) {
 };
 
 // Modificar el estado de un pedido por ID
-export const updateEstadoPedidosId = (res, req) => {
+export const updateEstadoPedidosId = (req, res) => {
 const id = parseInt(req.params.id);
     const pedidoIndex = pedidos.findIndex(p => p.Id === id);
     if (pedidoIndex === -1) {
@@ -69,7 +69,7 @@ const id = parseInt(req.params.id);
 }
 
 // Actualizar un pedido por Id
-export const updatePedidosId = (res, req) => {
+export const updatePedidosId = (req, res) => {
 const id = parseInt(req.params.id);
     const pedidoIndex = pedidos.findIndex(p => p.Id === id);
     if (pedidoIndex === -1) {
@@ -82,7 +82,7 @@ const id = parseInt(req.params.id);
 }
 
 // Eliminar un pedido por Id
-export const deletePedidosId = (res, req) => {
+export const deletePedidosId = (req, res) => {
     const id = parseInt(req.params.id);
     const pedidoIndex = pedidos.findIndex(p => p.Id === id);
     if (pedidoIndex === -1) {
@@ -90,4 +90,5 @@ export const deletePedidosId = (res, req) => {
     }
     pedidos.splice(pedidoIndex, 1);
     res.status(200).json({ mensaje: "Pedido eliminado" });
-}
+};
+
